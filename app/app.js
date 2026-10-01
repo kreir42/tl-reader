@@ -127,7 +127,7 @@ function bookItem(b) {
   return li;
 }
 
-/* The reader saves under "reader:<book>:" (see make_reader.py). */
+/* The reader saves under "reader:<book>:" (see "HTML file requirements" in README.md). */
 function forgetState(id) {
   try {
     const prefix = `reader:${id}:`;

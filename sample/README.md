@@ -8,4 +8,4 @@ These are the aligned source files for `app/sample/the_spiders_thread.html`.
   - Implicit ruby was rewritten in the explicit `｜base《reading》` form.
 - **English:** my own translation, aligned one paragraph per Japanese paragraph.
 
-Each `NNN - …` pair is one chapter. The first line is the chapter title, and paragraphs are separated by blank lines. Paragraph *n* of the English file translates paragraph *n* of the Japanese file.
+Each `NNN - …` pair is one chapter. The first line is the chapter title, and paragraphs are separated by blank lines. Paragraph *n* of the English file translates paragraph *n* of the Japanese file. A `[TL Note: …]` line directly under an English paragraph annotates that paragraph and doesn't count toward the alignment.

@@ -1,6 +1,6 @@
 /* Bump VERSION on every release: the browser only notices an update when
    this file's bytes change, and the old cache is dropped by name. */
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = "tl-reader-" + VERSION;
 const SHELL = ["./", "index.html", "app.js", "db.js", "style.css", "manifest.webmanifest",
                "icon.svg", "icon-192.png", "icon-512.png"];

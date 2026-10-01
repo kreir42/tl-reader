@@ -46,6 +46,18 @@ $("#picker").addEventListener("change", async (e) => {
   keepStorage();
 });
 
+$("#sample").addEventListener("click", async () => {
+  try {
+    const res = await fetch("sample/the_spiders_thread.html");
+    if (!res.ok) throw new Error(res.statusText);
+    const file = new File([await res.blob()], "the_spiders_thread.html", { type: "text/html" });
+    toast(await importFile(file));
+    await render();
+  } catch (err) {
+    toast(`Couldn't load the sample: ${err.message}`);
+  }
+});
+
 async function importFile(file) {
   // The metadata lives in <head>; no need to parse 10 MB to find it.
   const head = await file.slice(0, 8192).text();

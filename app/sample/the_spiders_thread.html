@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="reader-book" content="the_spiders_thread">
+<title>The Spider's Thread — 001–003</title>
+<style>
+:root {
+  --fs: 18px;
+  --bg: #fbf9f5; --fg: #221f1c; --muted: #6f6862; --rule: #e4ded4;
+  --accent: #8a4436; --spoiler: #cec6ba; --bar: #ffffff; --barline: #e4ded4;
+  --note: #6a6f57; --shadow: rgba(40, 32, 24, .13);
+}
+:root[data-theme="dark"] {
+  --bg: #16171b; --fg: #dad6cf; --muted: #918a82; --rule: #33353c;
+  --accent: #d9917f; --spoiler: #3c4048; --bar: #1e2026; --barline: #33353c;
+  --note: #9aa77e; --shadow: rgba(0, 0, 0, .5);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16171b; --fg: #dad6cf; --muted: #918a82; --rule: #33353c;
+    --accent: #d9917f; --spoiler: #3c4048; --bar: #1e2026; --barline: #33353c;
+    --note: #9aa77e; --shadow: rgba(0, 0, 0, .5);
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: var(--fs);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  padding-bottom: 7.5rem;
+}
+
+.wrap {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 0;
+}
+body.mode-split .wrap { max-width: 84rem; }
+
+/* ---------- paragraphs ---------- */
+.pair { margin: 0 0 1.15em; }
+.pair p { margin: 0; }
+
+.jp {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho",
+               "Noto Serif JP", "Noto Serif CJK JP", "Source Han Serif",
+               "MS Mincho", serif;
+  line-height: 2.05;              /* headroom so <rt> never clips */
+  letter-spacing: .02em;
+}
+.en { line-height: 1.68; }
+.tl {
+  font-size: .82em;
+  line-height: 1.55;
+  color: var(--note);
+  font-style: italic;
+  border-left: 2px solid var(--rule);
+  padding-left: .7em;
+  margin: .35em 0 .35em .2em;
+}
+
+ruby { ruby-position: over; }
+rt {
+  font-size: .5em;
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: .78;
+  user-select: none;
+}
+body.furigana-off rt { display: none; }
+
+em.bouten {
+  font-style: normal;
+  -webkit-text-emphasis: filled dot;
+  text-emphasis: filled dot;
+  -webkit-text-emphasis-position: over right;
+  text-emphasis-position: over right;
+}
+
+.orphan > p { outline: 1px dashed var(--accent); outline-offset: .3em; }
+
+/* ---------- chapter headings ---------- */
+.chapter { margin: 0 0 4.5rem; }
+.chapter + .chapter { border-top: 1px solid var(--rule); padding-top: 3rem; }
+.chapter-head { margin: 0 0 2.2rem; }
+.pair.title p { font-weight: 600; }
+.pair.title .jp { font-size: 1.5em; line-height: 1.75; }
+.pair.title .en { font-size: 1.32em; line-height: 1.35; }
+.pair.title .en span { background: none !important; color: inherit !important; }
+
+/* ---------- tags ---------- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+}
+.tag {
+  display: inline-block;
+  font-size: 0.62em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  padding: 0.15em 0.55em;
+  border-radius: 9999px;
+  background: var(--rule);
+  color: var(--muted);
+  border: 1px solid var(--barline);
+  line-height: 1.4;
+  user-select: none;
+}
+
+/* ---------- mode: japanese only ---------- */
+body.mode-jp .en, body.mode-jp .tags { display: none; }
+
+/* ---------- mode: english only ---------- */
+body.mode-en .jp { display: none; }
+/* the note follows the paragraph it annotates; only mode 4 wants it first */
+body.mode-en .pair { display: flex; flex-direction: column; }
+body.mode-en .en { order: 1; }
+body.mode-en .tags { order: 2; }
+body.mode-en .tl { order: 3; }
+
+/* ---------- mode: side by side ---------- */
+body.mode-split .pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "jp en" "jp tl";
+  gap: 0 2.6rem;
+  align-items: start;
+  margin-bottom: 1.35em;
+}
+body.mode-split .pair.title {
+  grid-template-areas: "jp en" "jp tags" "jp tl";
+}
+body.mode-split .jp { grid-area: jp; }
+body.mode-split .en { grid-area: en; }
+body.mode-split .tags { grid-area: tags; }
+body.mode-split .tl { grid-area: tl; }
+/* one continuous rule down the gutter, rather than a segment per pair */
+body.mode-split .wrap {
+  background: linear-gradient(var(--rule), var(--rule)) 50% 0 / 1px 100% no-repeat;
+}
+
+/* ---------- mode: interleaved with spoilers ---------- */
+body.mode-mix .pair { padding-bottom: .35em; }
+body.mode-mix .en { cursor: pointer; margin-top: .25em; }
+body.mode-mix .en > span {
+  background: var(--spoiler);
+  color: transparent;
+  text-shadow: none;
+  border-radius: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 .12em;
+  transition: background-color .12s ease, color .12s ease;
+}
+body.mode-mix .en.revealed > span,
+body.mode-mix.reveal-all .en > span {
+  background: transparent;
+  color: inherit;
+  cursor: auto;
+}
+body.mode-mix .en.revealed, body.mode-mix.reveal-all .en { cursor: auto; }
+body.mode-mix .en > span * { visibility: inherit; }
+body.mode-mix .en:not(.revealed) > span { user-select: none; }
+body.mode-mix.reveal-all .en:not(.revealed) > span { user-select: auto; }
+
+body.notes-off .tl { display: none; }
+
+/* ---------- bottom bar ---------- */
+.bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  background: var(--bar);
+  border-top: 1px solid var(--barline);
+  box-shadow: 0 -2px 14px var(--shadow);
+  padding: .5rem max(.6rem, env(safe-area-inset-left))
+           calc(.5rem + env(safe-area-inset-bottom))
+           max(.6rem, env(safe-area-inset-right));
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+}
+.bar-inner {
+  max-width: 84rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem .75rem;
+  justify-content: space-between;
+}
+.group { display: flex; align-items: center; gap: .3rem; }
+
+.modes { border: 1px solid var(--barline); border-radius: 8px; overflow: hidden; gap: 0; }
+.modes button {
+  border: 0;
+  border-right: 1px solid var(--barline);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  padding: .42rem .7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.modes button:last-child { border-right: 0; }
+.modes button:hover { color: var(--fg); background: color-mix(in srgb, var(--fg) 6%, transparent); }
+.modes button[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.bar button.plain, .bar select {
+  border: 1px solid var(--barline);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  border-radius: 7px;
+  padding: .38rem .55rem;
+  cursor: pointer;
+}
+.bar button.plain:hover, .bar select:hover { color: var(--fg); }
+.bar button.plain[aria-pressed="true"] { color: var(--fg); border-color: var(--accent); }
+.bar select { max-width: 15rem; background: var(--bar); }
+.bar .sep { width: 1px; height: 1.4rem; background: var(--barline); }
+#revealAll[hidden] { display: none; }
+.long { display: inline; }
+.short { display: none; }
+
+@media (max-width: 720px) {
+  .long { display: none; }
+  .short { display: inline; }
+  .bar-inner { justify-content: center; gap: .35rem .5rem; }
+  .bar select { max-width: 9.5rem; }
+  body.mode-split .wrap { padding-left: .6rem; padding-right: .6rem; }
+  body.mode-split .pair { gap: 0 1rem; }
+}
+
+@media print {
+  .bar { display: none; }
+  body { padding-bottom: 0; }
+}
+</style>
+</head>
+<body class="mode-mix">
+<main class="wrap">
+<article class="chapter" id="ch001">
+<header class="chapter-head">
+<div class="pair title"><p class="jp">蜘蛛の糸　一</p><p class="en"><span>The Spider's Thread — I</span></p></div>
+</header>
+<div class="pair"><p class="jp">　ある日の事でございます。<ruby>御釈迦様<rt>おしゃかさま</rt></ruby>は極楽の<ruby>蓮池<rt>はすいけ</rt></ruby>のふちを、独りでぶらぶら御歩きになっていらっしゃいました。池の中に咲いている<ruby>蓮<rt>はす</rt></ruby>の花は、みんな玉のようにまっ白で、そのまん中にある<ruby>金色<rt>きんいろ</rt></ruby>の<ruby>蕊<rt>ずい</rt></ruby>からは、何とも云えない<ruby>好<rt>よ</rt></ruby>い<ruby>匂<rt>におい</rt></ruby>が、<ruby>絶間<rt>たえま</rt></ruby>なくあたりへ<ruby>溢<rt>あふ</rt></ruby>れて居ります。極楽は丁度朝なのでございましょう。</p><p class="en"><span>It happened one day. The Buddha was strolling alone, at his leisure, along the edge of the lotus pond in Paradise. The lotus flowers blooming in the pond were all as white as pearls, and from the golden stamens at their hearts an indescribably sweet fragrance spilled ceaselessly into the air. It must have been morning in Paradise.</span></p></div>
+<div class="pair"><p class="jp">　やがて御釈迦様はその池のふちに<ruby>御佇<rt>おたたず</rt></ruby>みになって、水の<ruby>面<rt>おもて</rt></ruby>を<ruby>蔽<rt>おお</rt></ruby>っている蓮の葉の間から、ふと下の<ruby>容子<rt>ようす</rt></ruby>を御覧になりました。この極楽の蓮池の下は、丁度<ruby>地獄<rt>じごく</rt></ruby>の底に当って居りますから、<ruby>水晶<rt>すいしよう</rt></ruby>のような水を透き徹して、<ruby>三途<rt>さんず</rt></ruby>の河や針の山の景色が、丁度<ruby>覗<rt>のぞ</rt></ruby>き<ruby>眼鏡<rt>めがね</rt></ruby>を見るように、はっきりと見えるのでございます。</p><p class="en"><span>Presently the Buddha paused at the edge of the pond and, through the gaps between the lotus leaves covering the water, happened to glance at what lay below. The bottom of Hell lies directly beneath the lotus pond of Paradise, so through the crystal-clear water the River of Three Crossings and the Mountain of Needles could be seen as distinctly as the pictures in a peep-box.</span></p></div>
+<div class="pair"><p class="jp">　するとその地獄の底に、<ruby>犍陀多<rt>かんだた</rt></ruby>と云う男が一人、ほかの罪人と一しょに<ruby>蠢<rt>うごめ</rt></ruby>いている姿が、御眼に止まりました。この犍陀多と云う男は、人を殺したり家に火をつけたり、いろいろ悪事を働いた大泥坊でございますが、それでもたった一つ、善い事を致した覚えがございます。と申しますのは、ある時この男が深い林の中を通りますと、小さな<ruby>蜘蛛<rt>くも</rt></ruby>が一匹、路ばたを<ruby>這<rt>は</rt></ruby>って行くのが見えました。そこで犍陀多は早速足を挙げて、踏み殺そうと致しましたが、「いや、いや、これも小さいながら、命のあるものに違いない。その命を<ruby>無暗<rt>むやみ</rt></ruby>にとると云う事は、いくら何でも可哀そうだ。」と、こう急に思い返して、とうとうその蜘蛛を殺さずに助けてやったからでございます。</p><p class="en"><span>Then, at the bottom of that Hell, his eye fell on a man called Kandata, writhing among the other sinners. This Kandata was a great robber who had killed people, set fire to houses, and done every manner of evil, yet he could remember one single good deed. Once, passing through a deep forest, he saw a little spider crawling along the side of the path. Kandata at once raised his foot to stamp it to death, but then he suddenly thought better of it: "No, no. Small as it is, this too is surely a thing with a life. To take that life for no reason would be a pity, whatever else one might say." And so in the end he let the spider live.</span></p></div>
+<div class="pair"><p class="jp">　御釈迦様は地獄の容子を御覧になりながら、この犍陀多には蜘蛛を助けた事があるのを御思い出しになりました。そうしてそれだけの善い事をした<ruby>報<rt>むくい</rt></ruby>には、出来るなら、この男を地獄から救い出してやろうと御考えになりました。幸い、側を見ますと、<ruby>翡翠<rt>ひすい</rt></ruby>のような色をした蓮の葉の上に、極楽の蜘蛛が一匹、美しい銀色の糸をかけて居ります。御釈迦様はその蜘蛛の糸をそっと御手に御取りになって、玉のような<ruby>白蓮<rt>しらはす</rt></ruby>の間から、遥か下にある地獄の底へ、まっすぐにそれを御<ruby>下<rt>おろ</rt></ruby>しなさいました。</p><p class="en"><span>As he looked upon the state of Hell, the Buddha recalled that this Kandata had once spared a spider, and he resolved that, in return for that one good deed, he would rescue the man from Hell if he could. Fortunately, when he looked beside him, a spider of Paradise was spinning a beautiful silver thread upon a lotus leaf the color of jade. The Buddha gently took the spider's thread in his hand and lowered it straight down, from between the pearl-white lotuses, to the bottom of Hell far below.</span></p></div>
+</article>
+<article class="chapter" id="ch002">
+<header class="chapter-head">
+<div class="pair title"><p class="jp">蜘蛛の糸　二</p><p class="en"><span>The Spider's Thread — II</span></p></div>
+</header>
+<div class="pair"><p class="jp">　こちらは地獄の底の血の池で、ほかの罪人と一しょに、浮いたり沈んだりしていた<ruby>犍陀多<rt>かんだた</rt></ruby>でございます。何しろどちらを見ても、まっ暗で、たまにそのくら暗からぼんやり浮き上っているものがあると思いますと、それは恐しい針の山の針が光るのでございますから、その心細さと云ったらございません。その上あたりは墓の中のようにしんと静まり返って、たまに聞えるものと云っては、ただ罪人がつく<ruby>微<rt>かすか</rt></ruby>な<ruby>嘆息<rt>たんそく</rt></ruby>ばかりでございます。これはここへ落ちて来るほどの人間は、もうさまざまな地獄の<ruby>責苦<rt>せめく</rt></ruby>に疲れはてて、泣声を出す力さえなくなっているのでございましょう。ですからさすが大泥坊の犍陀多も、やはり血の池の血に<ruby>咽<rt>むせ</rt></ruby>びながら、まるで死にかかった<ruby>蛙<rt>かわず</rt></ruby>のように、ただもがいてばかり居りました。</p><p class="en"><span>Down here, in the Pool of Blood at the bottom of Hell, floating and sinking along with the other sinners, was Kandata. Wherever one looked it was pitch dark, and whenever something did glimmer faintly out of that darkness, it was only the glint of the needles on the dreadful Mountain of Needles, so the forlornness of it was beyond words. What was more, all around was as hushed as the inside of a grave, and the only sound to be heard was the faint sighing of the sinners. Anyone who had fallen this far, it seems, was so worn out by Hell's many torments that he no longer had the strength even to cry. And so even Kandata, great robber though he was, could only choke on the blood of the pool and flounder like a dying frog.</span></p></div>
+<div class="pair"><p class="jp">　ところがある時の事でございます。<ruby>何気<rt>なにげ</rt></ruby>なく犍陀多が頭を挙げて、血の池の空を眺めますと、そのひっそりとした暗の中を、遠い遠い天上から、銀色の<ruby>蜘蛛<rt>くも</rt></ruby>の糸が、まるで人目にかかるのを恐れるように、一すじ細く光りながら、するすると自分の上へ垂れて参るのではございませんか。犍陀多はこれを見ると、思わず手を<ruby>拍<rt>う</rt></ruby>って喜びました。この糸に<ruby>縋<rt>すが</rt></ruby>りついて、どこまでものぼって行けば、きっと地獄からぬけ出せるのに相違ございません。いや、うまく行くと、極楽へはいる事さえも出来ましょう。そうすれば、もう針の山へ追い上げられる事もなくなれば、血の池に沈められる事もある筈はございません。</p><p class="en"><span>But then, one day, Kandata happened to raise his head and look up at the sky above the Pool of Blood, and what should he see but a silver spider's thread sliding down toward him from the far, far heavens through that silent darkness, a single fine strand glinting as though afraid of being seen. At the sight, Kandata clapped his hands for joy. If he clung to this thread and climbed and kept on climbing, he would surely escape from Hell. No — with luck, he might even get into Paradise. Then he would never again be driven up the Mountain of Needles, nor sunk in the Pool of Blood.</span></p></div>
+<div class="pair"><p class="jp">　こう思いましたから<ruby>犍陀多<rt>かんだた</rt></ruby>は、早速その蜘蛛の糸を両手でしっかりとつかみながら、一生懸命に上へ上へとたぐりのぼり始めました。元より大泥坊の事でございますから、こう云う事には昔から、慣れ切っているのでございます。</p><p class="en"><span>With that thought, Kandata promptly gripped the spider's thread firmly in both hands and began hauling himself up, higher and higher, with all his might. Being a great robber, he had long been well used to this sort of thing.</span></p></div>
+<div class="pair"><p class="jp">　しかし地獄と極楽との間は、何万里となくございますから、いくら<ruby>焦<rt>あせ</rt></ruby>って見た所で、容易に上へは出られません。ややしばらくのぼる<ruby>中<rt>うち</rt></ruby>に、とうとう犍陀多もくたびれて、もう一たぐりも上の方へはのぼれなくなってしまいました。そこで仕方がございませんから、まず一休み休むつもりで、糸の中途にぶら下りながら、遥かに目の下を見下しました。</p><p class="en"><span>But between Hell and Paradise lie tens of thousands of leagues, and however hard he strained, it was no easy matter to reach the top. After climbing for some while, even Kandata at last grew tired and could not haul himself up a single handhold further. With nothing else for it, he decided to rest for a moment, and hanging from the middle of the thread, he looked far down below him.</span></p></div>
+<div class="pair"><p class="jp">　すると、一生懸命にのぼった甲斐があって、さっきまで自分がいた血の池は、今ではもう暗の底にいつの間にかかくれて居ります。それからあのぼんやり光っている恐しい針の山も、足の下になってしまいました。この分でのぼって行けば、地獄からぬけ出すのも、存外わけがないかも知れません。犍陀多は両手を蜘蛛の糸にからみながら、ここへ来てから何年にも出した事のない声で、「しめた。しめた。」と笑いました。ところがふと気がつきますと、蜘蛛の糸の下の方には、<ruby>数限<rt>かずかぎり</rt></ruby>もない罪人たちが、自分ののぼった後をつけて、まるで<ruby>蟻<rt>あり</rt></ruby>の行列のように、やはり上へ上へ一心によじのぼって来るではございませんか。犍陀多はこれを見ると、驚いたのと恐しいのとで、しばらくはただ、<ruby>莫迦<rt>ばか</rt></ruby>のように大きな口を<ruby>開<rt>あ</rt></ruby>いたまま、眼ばかり動かして居りました。自分一人でさえ<ruby>断<rt>き</rt></ruby>れそうな、この細い蜘蛛の糸が、どうしてあれだけの<ruby>人数<rt>にんず</rt></ruby>の重みに堪える事が出来ましょう。もし万一途中で<ruby>断<rt>き</rt></ruby>れたと致しましたら、折角ここへまでのぼって来たこの<ruby>肝腎<rt>かんじん</rt></ruby>な自分までも、元の地獄へ<ruby>逆落<rt>さかおと</rt></ruby>しに落ちてしまわなければなりません。そんな事があったら、大変でございます。が、そう云う中にも、罪人たちは何百となく何千となく、まっ暗な血の池の底から、うようよと<ruby>這<rt>は</rt></ruby>い上って、細く光っている蜘蛛の糸を、一列になりながら、せっせとのぼって参ります。今の中にどうかしなければ、糸はまん中から二つに断れて、落ちてしまうのに違いありません。</p><p class="en"><span>His hard climb had been worth it: the Pool of Blood where he had been until a short while ago was now hidden somewhere in the depths of the darkness, and the dreadful, faintly glowing Mountain of Needles was beneath his feet as well. If he kept climbing at this rate, escaping from Hell might be easier than he had expected. Twining both hands around the spider's thread, Kandata laughed in a voice he had not used in all his years down here: "I've done it! I've done it!" But then he suddenly noticed that, on the lower part of the spider's thread, countless sinners were following in his wake, clambering eagerly up and up just as he had, like a line of ants. At this sight, from shock and fear, Kandata could only gape for a while like a fool, his mouth hanging wide open and only his eyes moving. How could this slender spider's thread, which looked ready to snap under him alone, bear the weight of so many? If it should break partway up, then even he — he who mattered most, who had climbed all this way — would plunge headlong back into Hell. That would be a disaster. Yet even as he thought this, the sinners came swarming up from the bottom of the pitch-dark Pool of Blood by the hundreds, by the thousands, climbing busily in single file up the faintly glinting spider's thread. Unless he did something now, the thread would surely snap in two in the middle, and he would fall.</span></p></div>
+<div class="pair"><p class="jp">　そこで犍陀多は大きな声を出して、「こら、罪人ども。この蜘蛛の糸は<ruby>己<rt>おれ</rt></ruby>のものだぞ。お前たちは一体誰に<ruby>尋<rt>き</rt></ruby>いて、のぼって来た。下りろ。下りろ。」と<ruby>喚<rt>わめ</rt></ruby>きました。</p><p class="en"><span>So Kandata raised his voice and bellowed, "Hey, you sinners! This spider's thread is mine! Who said you could climb up here? Get down! Get down!"</span></p></div>
+<div class="pair"><p class="jp">　その途端でございます。今まで何ともなかった蜘蛛の糸が、急に犍陀多のぶら下っている所から、ぷつりと音を立てて<ruby>断<rt>き</rt></ruby>れました。ですから犍陀多もたまりません。あっと云う<ruby>間<rt>ま</rt></ruby>もなく風を切って、<ruby>独楽<rt>こま</rt></ruby>のようにくるくるまわりながら、見る見る中に暗の底へ、まっさかさまに落ちてしまいました。</p><p class="en"><span>That very instant, the spider's thread, which until then had held without the slightest trouble, suddenly snapped with a sharp twang right where Kandata was hanging. Kandata was done for. Before he could so much as cry out, he cut through the wind, spinning round and round like a top, and in the blink of an eye he fell headlong into the depths of the darkness.</span></p></div>
+<div class="pair"><p class="jp">　後にはただ極楽の蜘蛛の糸が、きらきらと細く光りながら、月も星もない空の中途に、短く垂れているばかりでございます。</p><p class="en"><span>Afterward there was only the spider's thread of Paradise, glinting faintly, hanging short in the middle of a sky without moon or stars.</span></p></div>
+</article>
+<article class="chapter" id="ch003">
+<header class="chapter-head">
+<div class="pair title"><p class="jp">蜘蛛の糸　三</p><p class="en"><span>The Spider's Thread — III</span></p></div>
+</header>
+<div class="pair"><p class="jp">　<ruby>御釈迦様<rt>おしゃかさま</rt></ruby>は極楽の<ruby>蓮池<rt>はすいけ</rt></ruby>のふちに立って、この一部<ruby>始終<rt>しじゅう</rt></ruby>をじっと見ていらっしゃいましたが、やがて<ruby>犍陀多<rt>かんだた</rt></ruby>が血の池の底へ石のように沈んでしまいますと、悲しそうな御顔をなさりながら、またぶらぶら御歩きになり始めました。自分ばかり地獄からぬけ出そうとする、犍陀多の無慈悲な心が、そうしてその心相当な罰をうけて、元の地獄へ落ちてしまったのが、御釈迦様の御目から見ると、浅間しく思召されたのでございましょう。</p><p class="en"><span>The Buddha, standing at the edge of the lotus pond in Paradise, had watched all of this from beginning to end. Presently, when Kandata had sunk like a stone to the bottom of the Pool of Blood, he began to stroll on again with a sorrowful face. Kandata's heartless wish to escape from Hell by himself alone, and the fitting punishment that had dropped him back into the Hell he came from — to the Buddha's eyes, it must all have seemed pitiful and base.</span></p></div>
+<div class="pair"><p class="jp">　しかし極楽の蓮池の蓮は、少しもそんな事には<ruby>頓着<rt>とんじゃく</rt></ruby>致しません。その玉のような白い花は、御釈迦様の<ruby>御足<rt>おみあし</rt></ruby>のまわりに、ゆらゆら<ruby>萼<rt>うてな</rt></ruby>を動かして、そのまん中にある金色の<ruby>蕊<rt>ずい</rt></ruby>からは、何とも云えない<ruby>好<rt>よ</rt></ruby>い匂が、<ruby>絶間<rt>たえま</rt></ruby>なくあたりへ<ruby>溢<rt>あふ</rt></ruby>れて居ります。極楽ももう<ruby>午<rt>ひる</rt></ruby>に近くなったのでございましょう。</p><p class="en"><span>But the lotuses in the lotus pond of Paradise cared nothing at all for such things. Their pearl-white flowers swayed their calyxes gently around the Buddha's feet, and from the golden stamens at their hearts an indescribably sweet fragrance spilled ceaselessly into the air. It must have been nearly noon in Paradise by now.</span></p></div>
+<div class="pair"><p class="jp">（大正七年四月十六日）</p><p class="en"><span>(April 16, 1918)</span></p></div>
+</article>
+</main>
+
+<nav class="bar" aria-label="Reading controls">
+  <div class="bar-inner">
+    <div class="group modes" role="group" aria-label="Reading mode">
+      <button data-mode="jp" aria-pressed="false" title="Japanese only">日本語</button>
+      <button data-mode="en" aria-pressed="false" title="English only">EN</button>
+      <button data-mode="split" aria-pressed="false" title="Side by side">日 | EN</button>
+      <button data-mode="mix" aria-pressed="false" title="Interleaved, English hidden">日 + EN</button>
+    </div>
+    <div class="group">
+      <button class="plain" id="revealAll" aria-pressed="false" title="Reveal every English paragraph"><span class="long">Reveal all</span><span class="short">Reveal</span></button>
+      <button class="plain" id="furiganaBtn" aria-pressed="true" title="Show or hide furigana">ふり<span class="long">がな</span></button>
+      <button class="plain" id="notesBtn" aria-pressed="true" title="Show or hide translator's notes">TL</button>
+      <span class="sep"></span>
+      <button class="plain" id="smaller" title="Smaller text">A&minus;</button>
+      <button class="plain" id="bigger" title="Larger text">A+</button>
+      <button class="plain" id="themeBtn" title="Theme">&#9686;</button>
+    </div>
+    <div class="group"><button class="plain" id="prevCh" title="Previous chapter">&lsaquo;</button><select id="chapSel" aria-label="Jump to chapter"><option value="ch001">001 &middot; The Spider&#x27;s Thread — I</option><option value="ch002">002 &middot; The Spider&#x27;s Thread — II</option><option value="ch003">003 &middot; The Spider&#x27;s Thread — III</option></select><button class="plain" id="nextCh" title="Next chapter">&rsaquo;</button></div>
+  </div>
+</nav>
+
+<script>
+(function () {
+  var KEY = "reader:the_spiders_thread:";
+  var body = document.body;
+  var root = document.documentElement;
+  var MODES = ["jp", "en", "split", "mix"];
+
+  function load(k, d) { try { var v = localStorage.getItem(KEY + k); return v === null ? d : v; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(KEY + k, v); } catch (e) {} }
+
+  /* ---- keep the reader's place across any layout change ---- */
+  function anchor() {
+    var pairs = document.querySelectorAll(".pair");
+    var best = null, bestTop = -Infinity;
+    for (var i = 0; i < pairs.length; i++) {
+      var t = pairs[i].getBoundingClientRect().top;
+      if (t <= 80 && t > bestTop) { bestTop = t; best = pairs[i]; }
+      if (t > 80) break;
+    }
+    if (!best && pairs.length) { best = pairs[0]; bestTop = best.getBoundingClientRect().top; }
+    return best ? { el: best, top: bestTop } : null;
+  }
+  function preserve(fn) {
+    var a = anchor();
+    fn();
+    if (!a) return;
+    function fix() { window.scrollBy(0, a.el.getBoundingClientRect().top - a.top); }
+    fix();
+    requestAnimationFrame(fix);   /* idempotent: converges if layout settles late */
+  }
+
+  /* ---- keep the bar from covering the last paragraphs ---- */
+  var bar = document.querySelector(".bar");
+  function padForBar() { body.style.paddingBottom = (bar.offsetHeight + 28) + "px"; }
+  window.addEventListener("resize", padForBar);
+
+  /* ---- mode ---- */
+  var modeButtons = document.querySelectorAll(".modes button");
+  function setMode(m, remember) {
+    MODES.forEach(function (x) { body.classList.toggle("mode-" + x, x === m); });
+    modeButtons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.mode === m)); });
+    document.getElementById("revealAll").hidden = (m !== "mix");
+    padForBar();
+    if (remember !== false) save("mode", m);
+  }
+  modeButtons.forEach(function (b) {
+    b.addEventListener("click", function () { preserve(function () { setMode(b.dataset.mode); }); });
+  });
+
+  /* ---- spoilers ---- */
+  document.addEventListener("click", function (e) {
+    if (!body.classList.contains("mode-mix")) return;
+    var p = e.target.closest(".en");
+    if (!p || p.closest(".title")) return;
+    if (window.getSelection && String(window.getSelection()).length) return;
+    p.classList.toggle("revealed");
+  });
+  var revealAll = document.getElementById("revealAll");
+  revealAll.addEventListener("click", function () {
+    var on = !body.classList.contains("reveal-all");
+    preserve(function () {
+      body.classList.toggle("reveal-all", on);
+      document.querySelectorAll(".en.revealed").forEach(function (p) { p.classList.remove("revealed"); });
+    });
+    revealAll.setAttribute("aria-pressed", String(on));
+    revealAll.querySelector(".long").textContent = on ? "Hide all" : "Reveal all";
+    revealAll.querySelector(".short").textContent = on ? "Hide" : "Reveal";
+  });
+
+  /* ---- toggles ---- */
+  function toggle(id, cls, key, offValue) {
+    var btn = document.getElementById(id);
+    function apply(off, remember) {
+      body.classList.toggle(cls, off);
+      btn.setAttribute("aria-pressed", String(!off));
+      if (remember !== false) save(key, off ? "off" : "on");
+    }
+    btn.addEventListener("click", function () {
+      preserve(function () { apply(!body.classList.contains(cls)); });
+    });
+    apply(load(key, offValue) === "off", false);
+  }
+  toggle("furiganaBtn", "furigana-off", "furigana", "on");
+  toggle("notesBtn", "notes-off", "notes", "on");
+
+  /* ---- text size ---- */
+  var SIZES = [15, 16, 17, 18, 20, 22, 24, 27];
+  var size = parseInt(load("size", "18"), 10);
+  function applySize(remember) {
+    root.style.setProperty("--fs", size + "px");
+    if (remember !== false) save("size", String(size));
+  }
+  function step(dir) {
+    var i = SIZES.indexOf(size);
+    if (i < 0) i = SIZES.indexOf(18);
+    i = Math.min(SIZES.length - 1, Math.max(0, i + dir));
+    size = SIZES[i];
+    preserve(applySize);
+  }
+  document.getElementById("smaller").addEventListener("click", function () { step(-1); });
+  document.getElementById("bigger").addEventListener("click", function () { step(1); });
+  applySize(false);
+
+  /* ---- theme ---- */
+  var themeBtn = document.getElementById("themeBtn");
+  function applyTheme(t, remember) {
+    if (t === "system") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", t);
+    themeBtn.textContent = t === "dark" ? "◑" : (t === "light" ? "○" : "◐");
+    themeBtn.title = "Theme: " + t;
+    if (remember !== false) save("theme", t);
+  }
+  var theme = load("theme", "system");
+  themeBtn.addEventListener("click", function () {
+    theme = theme === "system" ? "light" : (theme === "light" ? "dark" : "system");
+    applyTheme(theme);
+  });
+  applyTheme(theme, false);
+
+  /* ---- chapters ---- */
+  var sel = document.getElementById("chapSel");
+  var chapters = sel ? Array.prototype.map.call(sel.options, function (o) { return o.value; }) : [];
+  function goto(id) {
+    var el = document.getElementById(id);
+    if (el) { el.scrollIntoView({ block: "start" }); window.scrollBy(0, -12); }
+  }
+  if (sel) {
+    sel.addEventListener("change", function () { goto(sel.value); });
+    document.getElementById("prevCh").addEventListener("click", function () {
+      var i = chapters.indexOf(current()); if (i > 0) { sel.value = chapters[i - 1]; goto(sel.value); }
+    });
+    document.getElementById("nextCh").addEventListener("click", function () {
+      var i = chapters.indexOf(current()); if (i > -1 && i < chapters.length - 1) { sel.value = chapters[i + 1]; goto(sel.value); }
+    });
+  }
+  var arts = document.querySelectorAll(".chapter");
+  function current() {
+    var id = arts.length ? arts[0].id : "";
+    for (var i = 0; i < arts.length; i++) {
+      if (arts[i].getBoundingClientRect().top <= 80) id = arts[i].id; else break;
+    }
+    return id;
+  }
+
+  /* ---- remember reading position ---- */
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    setTimeout(function () {
+      ticking = false;
+      var id = current();
+      if (sel && sel.value !== id) sel.value = id;
+      var a = anchor();
+      if (a) {
+        var art = a.el.closest(".chapter");
+        var idx = Array.prototype.indexOf.call(art.querySelectorAll(".pair"), a.el);
+        save("pos", JSON.stringify({ ch: art.id, i: idx, top: Math.round(a.top) }));
+      }
+    }, 250);
+  }, { passive: true });
+
+  setMode(MODES.indexOf(load("mode", "mix")) > -1 ? load("mode", "mix") : "mix", false);
+
+  try {
+    var pos = JSON.parse(load("pos", "null"));
+    if (pos && !location.hash) {
+      var art = document.getElementById(pos.ch);
+      if (art) {
+        var pairs = art.querySelectorAll(".pair");
+        var el = pairs[Math.min(pos.i, pairs.length - 1)];
+        if (el) {
+          el.scrollIntoView({ block: "start" });
+          window.scrollBy(0, -(pos.top || 0));
+        }
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

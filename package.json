@@ -1,0 +1,14 @@
+{
+  "name": "tl-reader",
+  "private": true,
+  "description": "Offline PWA library for bilingual Japanese-English reader files",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node tests/serve.js",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

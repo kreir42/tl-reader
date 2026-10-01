@@ -77,6 +77,9 @@ h1 { margin: 0; font-size: 1.5rem; font-weight: 650; }
 .btn.del { border: 0; border-left: 1px solid var(--line); border-radius: 0; color: var(--muted); padding: 0 16px; }
 
 #empty { color: var(--muted); }
+#empty p:first-child { color: var(--fg); }
+#empty .fine { font-size: .8rem; }
+#empty a { color: var(--accent); }
 code { font-size: .9em; }
 
 footer { margin-top: 24px; color: var(--muted); font-size: .8rem; text-align: center; }

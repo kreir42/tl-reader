@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Translation Reader</title>
+<script>
+  /* GitHub Pages answers here when a book link is opened before the service
+     worker controls the page (first visit, hard reload). Go to the library,
+     which registers the worker. */
+  var i = location.pathname.indexOf("/book/");
+  location.replace(i >= 0 ? location.pathname.slice(0, i + 1) : "/");
+</script>

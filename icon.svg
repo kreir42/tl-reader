@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#9b3b2a"/>
+  <path d="M96 150c56-22 112-22 160 8v228c-48-30-104-30-160-8z" fill="#f6f1e7"/>
+  <path d="M416 150c-56-22-112-22-160 8v228c48-30 104-30 160-8z" fill="#fffdf8"/>
+  <path d="M256 158v228" stroke="#9b3b2a" stroke-width="6"/>
+  <text x="176" y="292" font-family="Noto Serif CJK JP, serif" font-size="96" font-weight="700" text-anchor="middle" fill="#2b2620">日</text>
+  <text x="336" y="288" font-family="DejaVu Serif, serif" font-size="72" font-weight="700" text-anchor="middle" fill="#2b2620">EN</text>
+</svg>

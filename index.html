@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1a18" media="(prefers-color-scheme: dark)">
+<title>Translation Reader</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Library</h1>
+  <label class="btn primary">
+    Import
+    <input id="picker" type="file" accept=".html,.htm,text/html" multiple hidden>
+  </label>
+</header>
+
+<main>
+  <ul id="books"></ul>
+  <p id="empty" hidden>No books yet. Tap <b>Import</b> and pick a reader <code>.html</code> file.
+    Importing a book you already have replaces it and keeps your place.</p>
+</main>
+
+<footer id="storage"></footer>
+
+<div id="toast" role="status" hidden></div>
+<div id="update" hidden>
+  <span>Update ready</span>
+  <button class="btn primary" id="reload">Reload</button>
+</div>
+
+<script src="db.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

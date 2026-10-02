@@ -1,7 +1,7 @@
 {
   "name": "tl-reader",
   "private": true,
-  "description": "Offline PWA library for bilingual Japanese-English reader files",
+  "description": "Offline PWA library for bilingual Japanese-English reader files, and the script that builds them",
   "license": "MIT",
   "type": "module",
   "scripts": {
